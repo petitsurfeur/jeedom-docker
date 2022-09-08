@@ -1,5 +1,6 @@
-# Object file
-*.o
+# Environment file
+*.env
 
-# Ada Library Information
-*.ali
+# Database & website
+mysql
+www

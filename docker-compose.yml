@@ -1,0 +1,37 @@
+version: "3.9"
+services:
+  mariadb:
+    container_name: mariadb 
+    image: "mariadb:latest"
+    restart: unless-stopped
+    env_file: .env
+    volumes: 
+      - ./mysql:/var/lib/mysql
+    
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+  jeedom:
+    #build: "."
+    container_name: jeedom
+    image: "jeedom/jeedom:latest"
+    domainname: ${DOMAIN_NAME}
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+    volumes: 
+      - ./www:/var/www
+
+    environment:
+      - TZ=${TZ}
+
+    ports:
+      - "8022:22"
+      - "8080:80"
+
+        #    devices:
+      #      - "/dev/ttyACM0:/dev/ttyACM0"
+      
